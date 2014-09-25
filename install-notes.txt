@@ -1,0 +1,59 @@
+Most likely, anyone downloading this knows more about R than I do, 
+but here are some notes to get you started if you are R-ignorant, 
+like myself: 
+
+* Clone the library (hopefully that's already been done, since you 
+are reading this)
+* Build and check the resulting tarball using R
+
+R CMD build gdbr; R CMD check gdbr_1.0.tar.gz
+
+You should get a few complaints about the man pages. I haven't 
+done anything with the skeleton man pages, so...just ignore those.
+I don't want to mess with that until we are close to actually
+having a real, functional package. That is definitely not now. 
+
+You might need to install LaTeX if you want to avoid any 
+misleading errors associated with building those help documents.
+If you don't mind a slow download of 2.4 gigs, download MacTeX:
+http://www.tug.org/mactex/ and install that package. It works
+fine, though, you might need to add /usr/bintex to your PATH.
+
+If the install goes badly about a complaint about gfortran or
+libquadmath, you'll probably need to install G++. For the last
+couple of versions of OSX, the compile was CLang, which doesn't 
+ship with all of the same libraries as does Gcc. The easiest
+way to make it all right is to install GCC. If you are a windows
+user, google might be helpful here, but I can't offer much
+assistance...been way too long.
+
+INSTALLING GCC
+
+If you are running a linux machine and are having this problem, 
+you probably just need to add a special package. I haven't 
+directly dealth with that, but I'm sure googling "gfortran my-distro"
+will help. 
+
+For Mac Users, I recommend brew. I have seen some folks having 
+good luck with MacPorts. I've been using homebrew for a while, so
+I'm sticking to it. I won't get into installing homebrew here, but
+if you are unfamiliar, have a look at: http://brew.sh/
+
+Once it's installed, the process is simple:
+
+brew update; brew doctor
+brew install gcc
+
+
+You might have to delete a few apple binaries (or rename them to
+avoid collisions that require sudo rights). If so, be sure to 
+pay attention to the link commands brew feeds you. 
+
+Once it's installed properly, you may need to pass that info 
+along to R so that it can find the directory during linking:
+
+Inside the file ~/.R/Makevars, add this line:
+LDFLAGS += -L/usr/local/Cellar/gcc/4.8.3_1/lib/gcc/x86_64-apple-darwin13.2.0/4.8.3/
+
+(of course, make sure you give it the correct path, that is what
+mine was, but your version might be different).
